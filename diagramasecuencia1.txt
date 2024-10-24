@@ -1,0 +1,16 @@
+@startuml
+actor Cliente
+Cliente -> Sistema : solicitarReserva(dni: String, fecha: Date, idInstalacion: String): void
+Sistema -> Cliente : verificarReservaPendiente(dni: String): boolean
+alt Reserva pendiente
+    Sistema -> Cliente : Error: Reserva ya existe
+else Sin reserva pendiente
+    Sistema -> Instalacion : tieneCapacidadDisponible(fecha: Date): boolean
+    alt Capacidad disponible
+        Sistema -> Reserva : crearReserva(cliente: Cliente, fecha: Date, instalacion: Instalacion): Reserva
+        Reserva -> Cliente : confirmarReserva(reserva: Reserva): void
+    else Sin capacidad disponible
+        Sistema -> Cliente : Error: Gimnasio lleno
+    end
+end
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+actor Usuario
+Usuario -> Sistema : calcularPrecioFinal(idReserva: String)
+Sistema -> Reserva : obtenerReserva(idReserva: String): Reserva
+alt Reserva no encontrada
+    Sistema -> Usuario : Error: Reserva no encontrada
+else Reserva encontrada
+    Reserva -> Instalación : obtenerInstalacion(): Instalacion
+    Instalación -> Instalación : calcularCosto(): double
+    Instalación -> Reserva : retornarCosto(calculado: double)
+    Reserva -> Sistema : retornarPrecioFinal(costo: double)
+    Sistema -> Usuario : mostrarPrecioFinal(costo: double)
+end
+@enduml
